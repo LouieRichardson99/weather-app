@@ -1,5 +1,8 @@
 let locationInput = document.getElementById('location-input'),
-    apiKey = '2a4a351361d2545eb9d07ee37c7a0085';
+    locationSpan = document.getElementById('location'),
+    tempSpan = document.getElementById('temperature');
+
+const API_KEY = process.env.API_KEY;
 
 const storeLocation = () => {
     let location = locationInput.value;
@@ -12,7 +15,7 @@ async function fetchData(location) {
     
     if (response.ok) {
         let json = await response.json();
-        console.log(json)
+        console.log(json.main.temp)
     } else {
         console.log('Error: ', response.status)
     }
