@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
-    <script defer src="./app.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Weather App</h1>
-    <input type="text" name="location" id="location-input" placeholder="London, UK">
-    <button type="submit" id="submit-btn" onclick="storeLocation()">Add</button>
+    <form method="POST" action='/weather'>
+        <input type="text" name="location" id="location-input" placeholder="London, UK">
+        <button type="submit" id="submit-btn">Add</button>
+    </form>
     <p><span id="location">Location</span></p>
     <p><span id="temperature">Temperature</span>°</p>
     <p><span id="weather">Weather</span></p>
