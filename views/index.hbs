@@ -12,8 +12,9 @@
         <input type="text" name="location" id="location-input" placeholder="London, UK">
         <button type="submit" id="submit-btn">Add</button>
     </form>
-    <p><span id="location">Location</span></p>
-    <p><span id="temperature">Temperature</span>°</p>
-    <p><span id="weather">Weather</span></p>
+    <p class="error-msg">{{error}}</p>
+    <p class="location-header">Location: <span>{{location}}</span></p>
+    <p class="temperature-header">Temperature: <span>{{temperature}}</span></p>
+    <p class="weather-header">Weather: <span>{{weather}}</span></p>
 </body>
 </html>

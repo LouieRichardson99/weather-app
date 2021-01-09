@@ -3,12 +3,25 @@ const app = express();
 const port = 3000;
 const bodyParser = require('body-parser');
 const fetch = require("node-fetch");
+const hbs = require('express-handlebars');
 
 require('dotenv').config();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
+
+app.set('view engine', 'hbs');
+app.engine('hbs', hbs( {
+    extname: 'hbs',
+    defaultLayout: 'index.hbs',
+    layoutsDir: __dirname + '/views/'
+}));
+
+
+app.get('/', (req, res) => {
+    res.render('index', {layout: 'index'});
+});
 
 app.post('/weather', (req, res) => {
     const API_KEY = process.env.API_KEY;
@@ -18,15 +31,18 @@ app.post('/weather', (req, res) => {
     async function fetchData() {
         let location = req.body.location;
 
-        let response = await 
-            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}`);
-        
-        if (response.ok) {
+        try {
+            let response = await
+                fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}`);
             let json = await response.json();
-            console.log(json.main.temp)
-            res.redirect('/')
-        } else {
-            console.log('Error: ', response)
+            res.render('index', {
+                location: json.name,
+                temperature: json.main.temp,
+                weather: json.weather[0].main
+            })
+            console.log(json)
+        } catch (error) {
+            res.render('index', {error: "Sorry, I didn't understand that. Please try again"});
         }
     };
 });
