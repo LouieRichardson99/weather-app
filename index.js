@@ -20,7 +20,7 @@ app.engine('hbs', hbs( {
 
 
 app.get('/', (req, res) => {
-    res.render('index', {layout: 'index'});
+    res.render('index');
 });
 
 app.post('/weather', (req, res) => {
@@ -30,20 +30,24 @@ app.post('/weather', (req, res) => {
 
     async function fetchData() {
         let location = req.body.location;
-
+        
         try {
             let response = await
                 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}`);
             let json = await response.json();
             res.render('index', {
-                location: json.name,
-                temperature: json.main.temp,
-                weather: json.weather[0].main
-            })
-            console.log(json)
+                weatherMsg: true,
+                location: `${json.name}, ${json.sys.country}`,
+                temperature: json.main.temp + '°',
+                weather: json.weather[0].main,
+                weatherIcon: `https://openweathermap.org/img/wn/${json.weather[0].icon}@2x.png`
+            });
         } catch (error) {
-            res.render('index', {error: "Sorry, I didn't understand that. Please try again"});
-        }
+            res.render('index', {
+                errorMsg: true,
+                error: "Sorry I didn't understand that. Please try again"
+            });
+        };
     };
 });
 
